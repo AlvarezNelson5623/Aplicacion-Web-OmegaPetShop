@@ -16,4 +16,7 @@ app.use((req,res,next)=>{
     next();
 });
 
+
+
+app.use(require('./routers/routers.js'));
 module.exports=app;
