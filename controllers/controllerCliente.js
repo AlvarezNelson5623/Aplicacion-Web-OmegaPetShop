@@ -1,16 +1,18 @@
 const { default: mongoose } = require("mongoose");
-const producto = require("../models/productos");
+const cliente = require("../models/clientes");
 
-function saveProducto(req,res){
-    var myProducto = new producto(req.body);
-    myProducto.save((err,result)=>{
+
+
+function saveData(req,res){
+    var myCliente = new cliente(req.body);
+    myCliente.save((err,result)=>{
         res.status(200).send({message:result});
     });
 }
 
 function buscarData(req,res){
-    var idProducto=req.params.id;
-    producto.findById(idProducto).exec((err,result)=>{
+    var idCliente=req.params.id;
+    cliente.findById(idCliente).exec((err,result)=>{
         if(err){
             res.status(500).send({message:'Error al momento de ejecutar la solicitud'});
         }else{
@@ -24,12 +26,9 @@ function buscarData(req,res){
 }
 
 function listarData(req,res){
-    // var idProducto=req.paramas.idb; // duada con este   idb
-    // if(!idProducto){
-    var result=producto.find({}).sort('nombre');
-    // }else{
-    //     var result=producto.find({_id:idProducto}).sort('nombre');
-    // }
+ 
+    var result=cliente.find({}).sort('nombre');
+    
     result.exec(function(err,result){
         if(err){
             res.status(500).send({message:'Error al momento de ejecutar la solicitud'});
@@ -45,28 +44,28 @@ function listarData(req,res){
 
 function updateData(req,res){
     var id = mongoose.Types.ObjectId(req.query.id);
-    producto.findOneAndUpdate({_id:id}, req.body, {new:true}, function(err,producto){
+    cliente.findOneAndUpdate({_id:id}, req.body, {new:true}, function(err,cliente){
         if(err)
             res.send(err);
         else
-        res.json(producto);          
+        res.json(cliente);          
     });
 }
 
 function deleteData(req,res){
-    var idProducto=req.params.id;
-    producto.findOneAndRemove(idProducto, function(err ,producto){
+    var idCliente=req.params.id;
+    cliente.findOneAndRemove(idCliente, function(err ,cliente){
         if(err){
             return res.json(500, {
-                message: 'No hemos encontrado el producto'
+                message: 'No hemos encontrado el cliente'
             });
         }
-    return res.json(producto);
+    return res.json(cliente);
     });
 }
 
 module.exports={
-    saveProducto,
+    saveData,
     buscarData,
     listarData,
     updateData,

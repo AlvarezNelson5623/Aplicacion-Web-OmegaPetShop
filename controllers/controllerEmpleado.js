@@ -1,16 +1,16 @@
 const { default: mongoose } = require("mongoose");
-const producto = require("../models/productos");
+const empleado = require("../models/empleados");
 
-function saveProducto(req,res){
-    var myProducto = new producto(req.body);
-    myProducto.save((err,result)=>{
-        res.status(200).send({message:result});
+function saveData(req,res){
+    var myEmpleado = new empleado(req.body);
+    myEmpleado.save((err,result)=>{
+        res.status(200).send({message:result}); 
     });
 }
 
 function buscarData(req,res){
-    var idProducto=req.params.id;
-    producto.findById(idProducto).exec((err,result)=>{
+    var idEmpleado=req.params.id;
+    empleado.findById(idEmpleado).exec((err,result)=>{
         if(err){
             res.status(500).send({message:'Error al momento de ejecutar la solicitud'});
         }else{
@@ -24,12 +24,9 @@ function buscarData(req,res){
 }
 
 function listarData(req,res){
-    // var idProducto=req.paramas.idb; // duada con este   idb
-    // if(!idProducto){
-    var result=producto.find({}).sort('nombre');
-    // }else{
-    //     var result=producto.find({_id:idProducto}).sort('nombre');
-    // }
+ 
+    var result=empleado.find({}).sort('nombres');
+    
     result.exec(function(err,result){
         if(err){
             res.status(500).send({message:'Error al momento de ejecutar la solicitud'});
@@ -45,28 +42,28 @@ function listarData(req,res){
 
 function updateData(req,res){
     var id = mongoose.Types.ObjectId(req.query.id);
-    producto.findOneAndUpdate({_id:id}, req.body, {new:true}, function(err,producto){
+    empleado.findOneAndUpdate({_id:id}, req.body, {new:true}, function(err,empleado){
         if(err)
             res.send(err);
         else
-        res.json(producto);          
+        res.json(empleado);          
     });
 }
 
 function deleteData(req,res){
-    var idProducto=req.params.id;
-    producto.findOneAndRemove(idProducto, function(err ,producto){
+    var idEmpleado=req.params.id;
+    empleado.findOneAndRemove(idEmpleado, function(err ,empleado){
         if(err){
             return res.json(500, {
-                message: 'No hemos encontrado el producto'
+                message: 'No hemos encontrado el empleado'
             });
         }
-    return res.json(producto);
+    return res.json(empleado);
     });
 }
 
 module.exports={
-    saveProducto,
+    saveData,
     buscarData,
     listarData,
     updateData,
